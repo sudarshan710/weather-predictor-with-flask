@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Predictor</title>
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .flash {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .flash strong {
+            font-weight: bold;
+        }
+
+        .flash[style*="color: red;"] {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .flash[style*="color: green;"] {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="content">
+        <header>
+            <h2>Weather Predictor</h2>
+        </header>
+
+        {% if error %}
+        <div class="flash" style="color: red;">
+            <strong>Error: </strong>{{ error }}
+        </div>
+        {% endif %}
+
+        <form id="predictionForm" action="{{ url_for('predict') }}" method="POST">
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year" value="{{ request.form['year'] if request.form else '' }}"  min="2006" max="2016" required>
+
+            <label for="month">Month:</label>
+            <input type="text" id="month" name="month" value="{{ request.form['month'] if request.form else '' }}"  min="1" max="12" required>
+
+            <label for="day">Day:</label>
+            <input type="text" id="day" name="day" value="{{ request.form['day'] if request.form else '' }}"  min="1" max="31"  required>
+
+            <label for="humidity">Humidity:</label>
+            <input type="text" id="humidity" name="humidity" value="{{ request.form['humidity'] if request.form else '' }}" required>
+
+            <label for="windspeed">Wind Speed (km/h):</label>
+            <input type="text" id="windspeed" name="windspeed" value="{{ request.form['windspeed'] if request.form else '' }}" required>
+
+            <label for="visibility">Visibility (km):</label>
+            <input type="text" id="visibility" name="visibility" value="{{ request.form['visibility'] if request.form else '' }}" required>
+
+            <label for="pressure">Pressure (millibars):</label>
+            <input type="text" id="pressure" name="pressure" value="{{ request.form['pressure'] if request.form else '' }}" required>
+
+            <button type="submit">Submit</button>
+            <button type="reset" style="color: red; background-color: white;" class="clear-btn">Clear All</button>
+        </form>
+        <br><br>
+        {% if prediction is not none %}
+        <div class="flash" style="color: green;">
+            <strong>Prediction: </strong>{{ prediction }}
+        </div>
+
+        {% endif %}
+    </section>
+</body>
+
+</html>
